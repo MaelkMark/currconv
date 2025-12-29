@@ -1,0 +1,17 @@
+{
+    "convertTo": "HUF",
+    "updateFrequencyHours": 6,
+    "decimals": 2,
+    "maxCurrencies": null,
+    "dateFormat": "hu-HU",
+    "displayModule": {
+        "ratesUpdated": true,
+        "usage": false
+    },
+    "fontSize": {
+        "message": 11,
+        "currencies": 11,
+        "ratesUpdated": 9,
+        "usage": 9
+    }
+}

@@ -1,0 +1,55 @@
+{
+  "$": [
+    "USD",
+    "CAD",
+    "AUD",
+    "HKD",
+    "MXN",
+    "NZD",
+    "SGD",
+    "ZAR"
+  ],
+  "CLP$": "CLP",
+  "kr": [
+    "DKK",
+    "ISK",
+    "NOK",
+    "SEK"
+  ],
+  "Fr": [
+    "CHF",
+    "XAF",
+    "XPF"
+  ],
+  "£": [
+    "FKP",
+    "GBP",
+    "SHP"
+  ],
+  "¥": [
+    "CNY",
+    "JPY"
+  ],
+  "Kč": "CZK",
+  "NT$": "TWD",
+  "R": "ZAR",
+  "R$": "BRL",
+  "RM": "MYR",
+  "Rp": "IDR",
+  "zł": "PLN",
+  "€": "EUR",
+  "Ft": "HUF",
+  "฿": "THB",
+  "₺": "TRY",
+  "₫": "VND",
+  "₣": "XPF",
+  "F": "XPF",
+  "₪": "ILS",
+  "₩": "KRW",
+  "₱": "PHP",
+  "₽": "RUB",
+  "лв": "BGN",
+  "lei": "RON",
+  "kn": "HRK",
+  "₹": "INR"
+}

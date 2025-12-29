@@ -1,0 +1,95 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
+
+.currconv-popup {
+    position: fixed;
+    display: none;
+    z-index: 10000;
+    background: hsl(217, 89%, 55%);
+    color: white;
+    padding: 0.5rem 0.8rem;
+    border-radius: 4px;
+    box-shadow: 0px 3px 8px rgb(0 0 0 / 0.24);
+    pointer-events: auto;
+    cursor: default;
+    font-family: "Rubik", sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.currconv-popup[data-show="false"] {
+    display: none;
+}
+
+.currconv-popup[data-result="error"] {
+    background: hsl(0, 89%, 55%);
+}
+
+.currconv-popup[data-result="warning"] {
+    background: hsl(32, 89%, 55%);
+}
+
+.currconv-popup-message {
+    font-size: 11pt;
+    font-weight: bold;
+    text-align: center;
+}
+
+.currconv-popup:has(.currconv-popup-currencies:not(:empty)) .currconv-popup-message {
+    margin-bottom: 5px;
+}
+
+:is(.currconv-popup-updated, .currconv-popup-usage):not(:empty) {
+    font-size: 9pt;
+    font-style: italic;
+    text-align: right;
+}
+
+.currconv-popup-currencies {
+    font-size: 11pt;
+    display: grid;
+    grid-template-columns: repeat(5, auto);
+    column-gap: 5px;
+    width: fit-content;
+}
+.currconv-popup-currencies:not(:empty) {
+    margin-bottom: 5px;
+}
+
+.currconv-currency-from-currency {
+    text-align: right;
+}
+
+.currconv-currency-to-value {
+    text-align: left;
+}
+
+.currconv-currency-to-currency {
+    text-align: right;
+}
+
+.currconv-loader {
+    width: 30px;
+    height: 30px;
+    margin-block: 5px;
+    border: 4px solid #FFFFFF;
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+}
+
+.currconv-loader[data-show="false"] {
+    display: none;
+}
+
+@keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+} 
