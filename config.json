@@ -1,7 +1,7 @@
 {
     "convertTo": "HUF",
     "updateFrequencyHours": 6,
-    "decimals": 2,
+    "decimals": 0,
     "maxCurrencies": null,
     "dateFormat": "hu-HU",
     "displayModule": {

@@ -2,7 +2,6 @@
 
 .currconv-popup {
     position: fixed;
-    display: none;
     z-index: 10000;
     background: hsl(217, 89%, 55%);
     color: white;

@@ -14,6 +14,12 @@ async function loadData() {
     init(apiKey, config, currencies);
 }
 
+function numberWithSpaces(number) {
+    var parts = number.toString().split(".");
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+    return parts.join(".");
+}
+
 async function init(apiKey, config, currencies) {
     // Create the popup element
     const popup = document.createElement("div");
@@ -65,25 +71,35 @@ async function init(apiKey, config, currencies) {
         
         const codes = [...new Set(Object.values(currencies).flat())];
         const symbols = [...Object.keys(currencies)];
-        const regexpCodes = codes.map((currency) => RegExp.escape(currency)).join("|");
-        const regexpSymbols = symbols.map((currency) => RegExp.escape(currency)).join("|");
+        const regexpCodes = codes.map((currency) => RegExp.escape(currency));
+        const regexpSymbols = symbols.map((currency) => RegExp.escape(currency));
 
-        const pattern = RegExp(
+        /* const pattern = RegExp(
             `(?<value>\\d+)\\s*(?<currency>${regexpCodes}|${regexpSymbols})|(?<currency>${regexpCodes}|${regexpSymbols})\\s*(?<value>\\d+)(?!\\s*(${regexpCodes}|${regexpSymbols}))`,
             "i"
+        ); */
+
+        const codePattern = RegExp(
+            String.raw`(?<![^\s\-+${regexpSymbols.join("")}])(?:(?<value>\d+[\d ,]*(\.\d)?[\d ,]*)[ ]*(?<code>${regexpCodes.join("|")})[ ]*|[ ]*(?<code2>${regexpCodes.join("|")})[ ]*(?<value2>\d+[\d ,]*(\.\d)?[\d ,]*))\.?(?![^\s+\-,;?!${regexpSymbols.join("")}])`,
+            "i"
         );
-        
-        const matches = selectedText.match(pattern);
-        if (!matches?.groups?.currency || !matches?.groups?.value)
+
+        const symbolPattern = RegExp(
+            String.raw`(?:(?<![^\s\-+])(?<value2>\d+[\d ,]*(\.\d)?[\d ]*)[ ]*(?<symbol2>${regexpSymbols.join("|")})|(?<![^\s\w\-+])(?<symbol>${regexpSymbols.join("|")})[ ]*(?<value>\d+[\d ,]*(\.\d)?[\d ]*))\.?(?![^\s+\-,;?!])`,
+            "i"
+        );
+
+        const codeMatches = selectedText.match(codePattern);
+        const symbolMatches = selectedText.match(symbolPattern);
+
+        let fromCurrencies = [codeMatches?.groups?.code || codeMatches?.groups?.code2 || currencies[symbolMatches?.groups?.symbol || symbolMatches?.groups?.symbol2]].flat();
+        fromCurrencies = fromCurrencies.filter(currency => Object.values(currencies).flat().includes(currency));
+        let fromValue = codeMatches?.groups?.value || codeMatches?.groups?.value2 || symbolMatches?.groups?.value || symbolMatches?.groups?.value2;
+
+        if (!fromValue || !fromCurrencies)
             return;
 
-        const currencySymbol = (matches.groups.currency).toUpperCase();
-        const fromCurrency = Object.keys(currencies).includes(currencySymbol)
-            ? [currencies[currencySymbol]].flat()
-            : [currencySymbol].flat();
-        const fromValue = parseInt(matches.groups.value);
-
-        if (!fromCurrency || !fromValue) return;
+        fromValue = parseFloat(fromValue.replace(/[\s,]/g, ""));
         
         let errorMessage = "";
         let conversionRates = null;
@@ -96,7 +112,7 @@ async function init(apiKey, config, currencies) {
                 conversionRates = stored.conversionRates;
                 
                 // The number of hours since the data was last updated
-                const passedHours = (new Date() - conversionRates.timestamp * 1000) / 1000 / 60 / 60;
+                const passedHours = (new Date() - conversionRates?.timestamp * 1000) / 1000 / 60 / 60;
                 const fetchRates = !conversionRates || passedHours > config.updateFrequencyHours;
 
                 let usageJson = null;
@@ -109,7 +125,6 @@ async function init(apiKey, config, currencies) {
                     }
     
                     usage = usageJson.data.usage;
-                    console.log("Usage:", usage)
                 }
 
                 if (fetchRates) {
@@ -132,7 +147,6 @@ async function init(apiKey, config, currencies) {
                         handleError(latestJson.message, latestJson);
                         return;
                     }
-                    console.log("Conversion rates:", latestJson);
                     conversionRates = latestJson;
                     chrome.storage.local.set({ conversionRates: latestJson });
                 }
@@ -175,13 +189,14 @@ async function init(apiKey, config, currencies) {
 
         if (conversionRates) {
             let html = "";
-            for (const currency of fromCurrency.slice(0, config.maxCurrencies || Infinity)) {
+            for (const currency of fromCurrencies.slice(0, config.maxCurrencies || Infinity)) {
                 const valueInUSD = (1 / conversionRates.rates[currency]) * fromValue;
                 const valueInTarget = valueInUSD * conversionRates.rates[config.convertTo];
-                const convertedValue = valueInTarget.toFixed(config.decimals);
+                const convertedValue = numberWithSpaces(valueInTarget.toFixed(config.decimals));
+                const from = numberWithSpaces(fromValue);
 
                 html += `
-                    <div class="currconv-currency-from-value">${fromValue}</div>
+                    <div class="currconv-currency-from-value">${from}</div>
                     <div class="currconv-currency-from-currency">${currency}</div>
                     <div class="currconv-currency-equals">=</div>
                     <div class="currconv-currency-to-value">${convertedValue}</div>
@@ -205,17 +220,21 @@ async function init(apiKey, config, currencies) {
 
             const rect = selection.getRangeAt(0).getBoundingClientRect();
             
+            let top, left;
             popup.dataset.show = true;
-            if (rect.left + window.scrollX + popup.offsetWidth < window.innerWidth) {
-                popup.style.left = `${rect.left + window.scrollX}px`;
+            if (rect.left + popup.offsetWidth < document.body.clientWidth) {
+                left = `${rect.left}px`;
             } else {
-                popup.style.left = `${rect.right + window.scrollX - popup.offsetWidth}px`;
+                left = `${rect.right - popup.offsetWidth}px`;
             }
-            if (rect.top + window.scrollY - popup.offsetHeight - 5 > 0) {
-                popup.style.top = `${rect.top + window.scrollY - popup.offsetHeight - 5}px`;
+            if (rect.top - popup.offsetHeight - 5 > 0) {
+                top = `${rect.top - popup.offsetHeight - 5}px`;
             } else {
-                popup.style.top = `${rect.bottom + window.scrollY + 5}px`;
+                top = `${rect.bottom + 5}px`;
             }
+
+            popup.style.left = Math.max(10, Math.min(document.body.clientWidth - popup.offsetWidth - 10, parseInt(left))) + "px";
+            popup.style.top = Math.max(10, Math.min(document.body.clientHeight - popup.offsetHeight - 10, parseInt(top))) + "px";
         }
     });
 
