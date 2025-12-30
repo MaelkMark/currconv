@@ -3,7 +3,6 @@
   "name": "CurrConv",
   "description": "Select a foreign currency on any webpage and CurrConv will convert it to your preferred currency.",
   "version": "1.0.0",
-  "license": "MIT",
   "permissions": ["storage"],
   "content_scripts": [
     {
