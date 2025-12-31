@@ -1,7 +1,7 @@
 <div align="center" style="text-align: center;">
     <img src="icons/icon128.png" />
     <h1>The CurrConv Chrome Extension</h1>
-    <p>v1.0.0</p>
+    <p>v1.0.1</p>
 </div>
 CurrConv is a local open-source Chrome extension for currency conversion. Select a foreign currency on any webpage and the extension will convert it to your preferred currency.
 
@@ -14,16 +14,19 @@ The currencies are converted with the [Open Exchange Rates](https://openexchange
   - [Get an API Key](#get-an-api-key)
   - [Install the extension in Chrome.](#install-the-extension-in-chrome)
 - [Updating the extension](#updating-the-extension)
+- [Removing the extension](#removing-the-extension)
 - [Configuration](#configuration)
   - [Settings (`config.json`)](#settings-configjson)
   - [Currencies (`currencies.json`)](#currencies-currenciesjson)
   - [Applying Changes](#applying-changes)
+- [Reporting bugs \& suggestions](#reporting-bugs--suggestions)
+- [Currently working on](#currently-working-on)
 
 
 ## Installation & Setup
 
 ### Download
-
+Download with git:
 ```
 git clone https://github.com/MaelkMark/currconv.git
 ```
@@ -31,10 +34,9 @@ git clone https://github.com/MaelkMark/currconv.git
 or simply download as ZIP (Code > Download ZIP) and unzip the folder.
 
 ### Get an API Key
+The currencies are converted with the [Open Exchange Rates](https://openexchangerates.org/) API, so the extension requires an APP ID.
 
-The extension requires an App ID from [Open Exchange Rates](https://openexchangerates.org/).
-
-1. [Get a free App ID](https://openexchangerates.org/signup/free) from Open Exchange Rates.
+1. [Get a free App ID](https://openexchangerates.org/signup/free) from Open Exchange Rates (you can also check out their [different plans](https://openexchangerates.org/signup)).
 2. Create a file named `api.key` in the extension folder.
 3. Paste your App ID into the `api.key` file.
 
@@ -43,7 +45,7 @@ The extension requires an App ID from [Open Exchange Rates](https://openexchange
 `a02cabaf4e85d42fa5fe6de4df3c7b6e` *(this is just an example, not a valid App ID)*
 
 With a free [plan](https://openexchangerates.org/signup), you can send up to **1000 requests per month**, and update the conversion rates every hour.
-This means that if you set `updateFrequencyHours` in `config.json` to 2 or higher, **you will never run out of requests**.
+This means that if you set `updateFrequencyHours` in [`config.json`](#configuration) to 2 or higher, **you will never run out of requests**.
 
 ### Install the extension in Chrome.
 1. Open the chrome extensions page:
@@ -52,7 +54,7 @@ This means that if you set `updateFrequencyHours` in `config.json` to 2 or highe
    - or click the three dots in the top right corner and select Extensions > Manage extensions
 
 2. Enable the Developer Mode by turning on the Developer Mode checkbox in the top right corner.
-3. Click the "Load unpacked" button and select the folder that you downloaded.
+3. Click the "Load unpacked" button in the top left corner and select the folder that you downloaded (`currconv`).
 
 Now the extension is installed. You may have to **reload the webpages** in order to use it.
 
@@ -67,6 +69,11 @@ git pull
 If you didn't, you have to download it as ZIP again and overwrite the files manually.
 
 After you updated the files, open the chrome extensions page and click on the refresh button (next to the on/off toggle of the extension). Before you can use the extension you have to **reload the webpages**.
+
+## Removing the extension
+
+1. Open the chrome extensions page (`chrome://extensions/`)
+2. Click the "Remove" button on the CurrConv extension card.
 
 ## Configuration
 ### Settings (`config.json`)
@@ -112,3 +119,13 @@ If a selected symbol maps to multiple currencies, the extension will attempt to 
 
 ### Applying Changes
 After changing the `config.json`, `currencies.json`, or `api.key` files, reload the web pages where you want to use the converter.
+
+## Reporting bugs & suggestions
+If you would like to report a bug, suggest an improvement or contribute code, please see the [contribution guide](CONTRIBUTING.md).
+
+## Currently working on
+This is a list of planned features, improvements, and bug fixes. Before suggesting an improvement, please check to see whether it is already on this list.
+
+- Recognizing the exact currency code from the following format: `US $`
+
+<p align="center" style="text-align: center; margin-top: 50px;">Made with ❤️ by <a href="https://github.com/MaelkMark">Márk Magyar</p>

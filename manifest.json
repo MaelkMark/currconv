@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "CurrConv",
   "description": "Select a foreign currency on any webpage and CurrConv will convert it to your preferred currency.",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "permissions": ["storage"],
   "content_scripts": [
     {

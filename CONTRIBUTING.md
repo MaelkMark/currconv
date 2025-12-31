@@ -22,6 +22,7 @@ A good bug report shouldn't leave others needing to chase you up for more inform
 
 - Make sure that you are using the latest version.
 - Determine if your bug is really a bug and not an error on your side.
+- Check the [currently working on](README.md#currently-working-on) section to see if we are already working on this bug.
 - To see if other users have experienced (and potentially already solved) the same issue you are having, check if there is not already a bug report existing for your bug or error in the [bug tracker](https://github.com/MaelkMark/currconv/issues?q=label%3Abug).
 - Collect information about the bug:
 
@@ -46,6 +47,7 @@ This section guides you through submitting an enhancement suggestion for CurrCon
 
 - Make sure that you are using the latest version.
 - Find out if the functionality is already covered, maybe by an individual [configuration](#configuration).
+- Check the [currently working on](README.md#currently-working-on) section to see if we are already working on this functionality.
 - Perform a [search](https://github.com/MaelkMark/currconv/issues) to see if the enhancement has already been suggested. If it has, add a comment to the existing issue instead of opening a new one.
 
 ### How Do I Submit a Good Enhancement Suggestion?
